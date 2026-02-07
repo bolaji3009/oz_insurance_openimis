@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Scheduled action for nightly pricelist parity check -->
+        <record id="scheduled_action_pricelist_parity_check" model="ir.cron">
+            <field name="name">Nightly Pricelist Parity Check</field>
+            <field name="model_id" ref="model_pricelist_parity"/>
+            <field name="state">code</field>
+            <field name="code">model.run_nightly_pricelist_parity_check()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall">0</field>
+            <field name="hour">2</field>
+            <field name="minute">0</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- Scheduled action for claim status refresh -->
+        <record id="scheduled_action_claim_status_refresh" model="ir.cron">
+            <field name="name">Claim Status Refresh</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">
+                records = model.search([
+                    ('is_insurance_claim', '=', True),
+                    ('claim_status', '=', 'submitted'),
+                    ('openimis_claim_id', '!=', False)
+                ])
+                for record in records:
+                    try:
+                        record.action_refresh_claim_status()
+                    except Exception as e:
+                        _logger.error(f"Error refreshing claim status for invoice {record.name}: {str(e)}")
+            </field>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall">0</field>
+            <field name="hour">8</field>
+            <field name="minute">0</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+    </data>
+</odoo>

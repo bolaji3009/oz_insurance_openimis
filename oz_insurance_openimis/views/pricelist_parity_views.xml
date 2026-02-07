@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Pricelist Parity Check Form View -->
+        <record id="pricelist_parity_form_view" model="ir.ui.view">
+            <field name="name">pricelist.parity.form.view</field>
+            <field name="model">pricelist.parity</field>
+            <field name="arch" type="xml">
+                <form string="Pricelist Parity Check">
+                    <sheet>
+                        <group col="4">
+                            <field name="pricelist_id"/>
+                            <field name="last_check_date"/>
+                            <field name="parity_status"/>
+                            <field name="discrepancy_count"/>
+                        </group>
+                        
+                        <group string="Actions" colspan="4">
+                            <button name="check_pricelist_parity" 
+                                    string="Check Parity Now" 
+                                    type="object" 
+                                    class="btn-primary"/>
+                        </group>
+                        
+                        <group string="Error Information">
+                            <field name="error_message" nolabel="1" style="width: 100%; height: 200px;"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Pricelist Parity Check Tree View -->
+        <record id="pricelist_parity_tree_view" model="ir.ui.view">
+            <field name="name">pricelist.parity.tree.view</field>
+            <field name="model">pricelist.parity</field>
+            <field name="arch" type="xml">
+                <tree string="Pricelist Parity Checks">
+                    <field name="pricelist_id"/>
+                    <field name="last_check_date"/>
+                    <field name="parity_status"/>
+                    <field name="discrepancy_count"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Pricelist Parity Check Search View -->
+        <record id="pricelist_parity_search_view" model="ir.ui.view">
+            <field name="name">pricelist.parity.search.view</field>
+            <field name="model">pricelist.parity</field>
+            <field name="arch" type="xml">
+                <search string="Pricelist Parity Checks">
+                    <field name="pricelist_id"/>
+                    <filter name="in_sync" string="In Sync" domain="[('parity_status', '=', 'in_sync')]"/>
+                    <filter name="out_of_sync" string="Out of Sync" domain="[('parity_status', '=', 'out_of_sync')]"/>
+                    <filter name="error" string="Error" domain="[('parity_status', '=', 'error')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Pricelist Parity Check Action -->
+        <record id="action_pricelist_parity_check" model="ir.actions.act_window">
+            <field name="name">Pricelist Parity Checks</field>
+            <field name="res_model">pricelist.parity</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No pricelist parity checks found.
+                </p>
+                <p>
+                    Click to create a new pricelist parity check.
+                </p>
+            </field>
+        </record>
+
+        <!-- Add to Accounting menu -->
+        <menuitem id="menu_pricelist_parity" 
+                  name="Pricelist Parity" 
+                  parent="account.menu_finance"
+                  action="action_pricelist_parity_check"
+                  sequence="50"/>
+    </data>
+</odoo>

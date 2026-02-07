@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_insurance_eligibility_wizard_user,insurance.eligibility.wizard.user,model_insurance_eligibility_wizard,base.group_user,1,1,1,1
+access_pricelist_parity_user,pricelist.parity.user,model_pricelist_parity,base.group_user,1,0,0,0
+access_pricelist_parity_manager,pricelist.parity.manager,model_pricelist_parity,oz_insurance_openimis.group_insurance_manager,1,1,1,1

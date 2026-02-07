@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Wizard form view -->
+        <record id="insurance_eligibility_wizard_view_form" model="ir.ui.view">
+            <field name="name">insurance.eligibility.wizard.view.form</field>
+            <field name="model">insurance.eligibility.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Insurance Eligibility Check" class="oe_form_configuration">
+                    <group col="4">
+                        <field name="partner_id" domain="[('is_company', '=', False)]"/>
+                        <field name="coverage_ref"/>
+                        <field name="insurer_id" domain="[('is_company', '=', True)]"/>
+                        <field name="care_setting"/>
+                    </group>
+                    
+                    <group col="1">
+                        <button name="action_check_eligibility" 
+                                string="Check Eligibility" 
+                                type="object" 
+                                class="btn-primary"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Eligibility Result">
+                            <group>
+                                <field name="eligibility_result" nolabel="1" style="width: 100%; height: 400px;"/>
+                            </group>
+                        </page>
+                        <page string="Raw FHIR Response">
+                            <group>
+                                <field name="eligibility_response" nolabel="1" style="width: 100%; height: 400px;"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard action -->
+        <record id="action_insurance_eligibility_wizard" model="ir.actions.act_window">
+            <field name="name">Check Insurance Eligibility</field>
+            <field name="res_model">insurance.eligibility.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="binding_view_types">form</field>
+            <field name="context">{'default_partner_id': active_id}</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Add insurance fields to sales order form view -->
+        <record id="sale_order_form_view_insurance" model="ir.ui.view">
+            <field name="name">sale.order.form.view.insurance</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Add insurance tab -->
+                <xpath expr="//page[@name='other_information']" position="before">
+                    <page name="insurance" string="Insurance">
+                        <group name="insurance_claim" string="Insurance Claim">
+                            <field name="is_insurance_claim"/>
+                            <field name="care_setting"/>
+                            <field name="coverage_ref"/>
+                            <field name="insurer"/>
+                            <field name="openimis_claim_id"/>
+                            <field name="claim_status"/>
+                            <field name="approved_total"/>
+                            <field name="denied_total"/>
+                        </group>
+                        
+                        <group name="actions" string="Actions" colspan="4">
+                            <button name="action_submit_insurance_claim" 
+                                    type="object" 
+                                    string="Submit to openIMIS" 
+                                    class="btn-primary"
+                                    attrs="{'invisible': [('is_insurance_claim', '=', False)]}"/>
+                            <button name="action_refresh_claim_status" 
+                                    type="object" 
+                                    string="Refresh Claim Status" 
+                                    class="btn-secondary"
+                                    attrs="{'invisible': [('openimis_claim_id', '=', False)]}"/>
+                        </group>
+                    </page>
+                </xpath>
+                
+                <!-- Add insurance fields to sales order search view -->
+                <xpath expr="//search" position="inside">
+                    <filter name="is_insurance_claim" string="Insurance Claims" domain="[('is_insurance_claim', '=', True)]"/>
+                    <filter name="claim_status" string="Claim Status" domain="[]">
+                        <field name="claim_status"/>
+                    </filter>
+                    <field name="openimis_claim_id"/>
+                    <field name="coverage_ref"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Modify sales order tree view to include insurance columns -->
+        <record id="sale_order_tree_view_insurance" model="ir.ui.view">
+            <field name="name">sale.order.tree.view.insurance</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="is_insurance_claim" width="30px" optional="hide"/>
+                    <field name="claim_status" optional="hide"/>
+                    <field name="openimis_claim_id" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

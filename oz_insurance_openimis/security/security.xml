@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Add security groups for insurance management -->
+        <record id="group_insurance_manager" model="res.groups">
+            <field name="name">Insurance Manager</field>
+            <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+        </record>
+
+        <!-- Access rights for insurance manager -->
+        <record id="access_account_move_insurance_manager" model="ir.model.access">
+            <field name="name">Insurance Manager - Account Move</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="group_id" ref="oz_insurance_openimis.group_insurance_manager"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <record id="access_sale_order_insurance_manager" model="ir.model.access">
+            <field name="name">Insurance Manager - Sale Order</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="group_id" ref="oz_insurance_openimis.group_insurance_manager"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+    </data>
+</odoo>
